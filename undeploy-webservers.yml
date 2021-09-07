@@ -1,0 +1,26 @@
+---
+- hosts: webservers
+  become: yes
+  tasks:
+    - name: Stop Nginx 
+      service:
+       name: nginx
+       state: stopped  
+
+    - name: Remove nginx
+      apt: 
+        name: nginx 
+        state: absent
+
+    - name: Remove useless packages from the cache
+      apt: 
+        autoclean: yes
+
+    - name: Remove dependencies that no longer needed
+      apt: 
+        autoremove: yes
+
+    - name: Remove index.html file
+      file: 
+       path: /var/www/html/index.html
+       state: absent

@@ -1,0 +1,21 @@
+---
+- hosts: webservers
+  become: yes
+  tasks:
+    - name: install nginx
+      apt: name=nginx update_cache=yes state=latest
+
+    - name: add index.html file
+      template:
+       src: ./index.html
+       dest: /var/www/html/index.html
+
+    - name: change default port to 8080 
+      template:
+       src: ./port8080_default
+       dest: /etc/nginx/sites-enabled/default
+
+    - name: restart Nginx 
+      service:
+       name: nginx
+       state: restarted  
